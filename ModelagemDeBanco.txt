@@ -1,3 +1,5 @@
+MODELAGEM DE BANCO
+
 Administrador
 
 Produtos
@@ -6,3 +8,7 @@ Produtos
 	Livros
 
 Adm cadastra vários Produtos -> Produtos são cadastrados por apenas um Adm
+
+_________________________________________________________________________________________________
+
+MODELAGEM DA APLIC
