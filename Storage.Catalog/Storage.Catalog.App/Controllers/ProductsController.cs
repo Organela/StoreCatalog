@@ -12,15 +12,23 @@ namespace Storage.Catalog.App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductsController : ControllerBase
     {
+        private readonly IProductRepository<Product> _productRepository;
+
+        public ProductsController(IProductRepository<Product> productRepository)
+        {
+            _productRepository = productRepository;
+        }
+
         // GET: api/Books
         [HttpGet]
         public async Task<IEnumerable<Product>> Get()
-        {
-            var products = new List<Product>();
-            products = await new IProductRepository().GetAllAsync();
-            return products;
+        {             
+           // var products = new List<Product>();
+            //products = _productRepository.GetAll();
+            return _productRepository.GetAll("Batatinha"); 
+            
         }
 
         // GET: api/Books/5

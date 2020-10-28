@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 namespace Storage.Catalog.Domain.Repositories
 {
     public interface IRepository<T>
-    {/*
-        void Delete(T entity);
-        Task DeleteAsync(T entity);
-        IList<T> GetAll();
-        Task<IList<T>> GetAllAsync();
-        T GetById(int id);
-        Task<T> GetByIdAsync(int id);
-        T Save(T entity);
-        Task<T> SaveAsync(T entity);
-        */
+    {
+        void Delete(T entity, string defaultConnection);
+        Task DeleteAsync(T entity, string defaultConnection);
+        IList<T> GetAll(string defaultConnection);
+        Task<IList<T>> GetAllAsync(string defaultConnection);
+        T GetById(int id, string defaultConnection);
+        Task<T> GetByIdAsync(int id, string defaultConnection);
+        T Save(T entity, string defaultConnection);
+        Task<T> SaveAsync(T entity, string defaultConnection);
+        
     }
 }

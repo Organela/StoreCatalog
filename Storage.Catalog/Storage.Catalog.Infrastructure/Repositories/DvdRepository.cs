@@ -2,48 +2,49 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Storage.Catalog.Domain.Entities;
 using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.Infrastructure.Repositories
 {
-    public class Repository<T> : IRepository<T>
+    public class DvdRepository : IDvdRepository<Dvd>
     {
-        public void Delete(T entity)
+        public void Delete(Dvd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(T entity)
+        public Task DeleteAsync(Dvd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public IList<T> GetAll()
+        public IList<Dvd> GetAll(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IList<T>> GetAllAsync()
+        public Task<IList<Dvd>> GetAllAsync(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public T GetById(int id)
+        public Dvd GetById(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetByIdAsync(int id)
+        public Task<Dvd> GetByIdAsync(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public T Save(T entity)
+        public Dvd Save(Dvd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> SaveAsync(T entity)
+        public Task<Dvd> SaveAsync(Dvd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }

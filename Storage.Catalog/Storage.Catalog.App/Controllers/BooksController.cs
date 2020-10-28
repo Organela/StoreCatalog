@@ -1,9 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Data;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using Dapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Storage.Catalog.Domain.Entities;
+using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.App.Controllers
 {
@@ -11,15 +17,24 @@ namespace Storage.Catalog.App.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private readonly IBookRepository<Book> _bookRepository;
+        private readonly ConnectionString _connectionString;
+
+        public BooksController(IBookRepository<Book> bookRepository, ConnectionString connectionString)
+        {
+            _bookRepository = bookRepository;
+            _connectionString = connectionString;
+        }
+
         // GET: api/Books
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<Book> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _bookRepository.GetAll(_connectionString.DefaultConnection);
         }
 
         // GET: api/Books/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";

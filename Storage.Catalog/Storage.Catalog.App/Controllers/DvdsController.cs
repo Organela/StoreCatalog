@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Storage.Catalog.Domain.Entities;
+using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.App.Controllers
 {
@@ -11,6 +13,13 @@ namespace Storage.Catalog.App.Controllers
     [ApiController]
     public class DvdsController : ControllerBase
     {
+        private readonly IDvdRepository<Dvd> _dvdRepository;
+
+        public DvdsController(IDvdRepository<Dvd> dvdRepository)
+        {
+            _dvdRepository = dvdRepository;
+        }
+
         // GET: api/Dvds
         [HttpGet]
         public IEnumerable<string> Get()
@@ -19,7 +28,7 @@ namespace Storage.Catalog.App.Controllers
         }
 
         // GET: api/Dvds/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";

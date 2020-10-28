@@ -6,44 +6,44 @@ using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository<T> : IProductRepository<T>
     {
-        public void Delete(object entity)
+        public void Delete(T entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(object entity)
+        public Task DeleteAsync(T entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public IList<object> GetAll()
+        public IList<T> GetAll(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IList<object>> GetAllAsync()
+        public Task<IList<T>> GetAllAsync(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public object GetById(int id)
+        public T GetById(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<object> GetByIdAsync(int id)
+        public Task<T> GetByIdAsync(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public object Save(object entity)
+        public T Save(T entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<object> SaveAsync(object entity)
+        public Task<T> SaveAsync(T entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }

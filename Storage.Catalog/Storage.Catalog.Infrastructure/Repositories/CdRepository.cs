@@ -2,48 +2,49 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Storage.Catalog.Domain.Entities;
 using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.Infrastructure.Repositories
 {
-    public class AdministratorRepository<T> : IAdministratorRepository<T>
+    public class CdRepository : ICdRepository<Cd>
     {
-        public void Delete(T entity, string defaultConnection)
+        public void Delete(Cd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(T entity, string defaultConnection)
+        public Task DeleteAsync(Cd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public IList<T> GetAll(string defaultConnection)
+        public IList<Cd> GetAll(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<IList<T>> GetAllAsync(string defaultConnection)
+        public Task<IList<Cd>> GetAllAsync(string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public T GetById(int id, string defaultConnection)
+        public Cd GetById(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetByIdAsync(int id, string defaultConnection)
+        public Task<Cd> GetByIdAsync(int id, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public T Save(T entity, string defaultConnection)
+        public Cd Save(Cd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> SaveAsync(T entity, string defaultConnection)
+        public Task<Cd> SaveAsync(Cd entity, string defaultConnection)
         {
             throw new NotImplementedException();
         }

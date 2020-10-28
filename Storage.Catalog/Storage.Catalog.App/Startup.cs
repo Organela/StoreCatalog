@@ -5,6 +5,10 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Storage.Catalog.Domain;
+using Storage.Catalog.Domain.Entities;
+using Storage.Catalog.Domain.Repositories;
+using Storage.Catalog.Infrastructure.Repositories;
 
 namespace Storage.Catalog.App
 {
@@ -26,6 +30,19 @@ namespace Storage.Catalog.App
             {
                 configuration.RootPath = "ClientApp/dist";
             });
+
+            services.AddMvc();
+
+            services.AddTransient<IProductRepository<Product>, ProductRepository<Product>>();
+
+            services.AddTransient<IBookRepository<Book>, BookRepository>();
+            
+            services.AddTransient<ICdRepository<Cd>, CdRepository>();
+
+            services.AddTransient<IDvdRepository<Dvd>, DvdRepository>();
+
+            services.AddSingleton(Configuration.GetSection("ConnectionString").Get<ConnectionString>());
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

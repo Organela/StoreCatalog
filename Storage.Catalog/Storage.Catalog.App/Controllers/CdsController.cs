@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Storage.Catalog.Domain.Entities;
+using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.App.Controllers
 {
@@ -11,6 +13,13 @@ namespace Storage.Catalog.App.Controllers
     [ApiController]
     public class CdsController : ControllerBase
     {
+        private readonly ICdRepository<Cd> _cdRepository;
+
+        public CdsController(ICdRepository<Cd> cdRepository)
+        {
+            _cdRepository = cdRepository;
+        }
+
         // GET: api/Cds
         [HttpGet]
         public IEnumerable<string> Get()
@@ -19,7 +28,7 @@ namespace Storage.Catalog.App.Controllers
         }
 
         // GET: api/Cds/5
-        [HttpGet("{id}", Name = "Get")]
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
