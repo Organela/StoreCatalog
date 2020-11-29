@@ -2,8 +2,14 @@
     <h2>Register your book</h2>
     <form [formGroup]="bookForm" (ngSubmit)="save()">
         <input type="text" formControlName="author" placeholder="Author" />
+        <div *ngIf="bookForm.controls.author.invalid && (bookForm.controls.author.dirty || bookForm.controls.author.touched)">
+          <div *ngIf="bookForm.controls.author.errors.required" class="danger">Author is required.</div>
+        </div>
         <input type="email" formControlName="cover" placeholder="Cover" />
         <input type="text" formControlName="title" placeholder="Title" />
+        <div *ngIf="bookForm.controls.title.invalid && (bookForm.controls.title.dirty || bookForm.controls.title.touched)">
+          <div *ngIf="bookForm.controls.title.errors.required" class="danger">Title is required.</div>
+        </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
@@ -16,8 +22,14 @@
     <h2>Register your CD</h2>
     <form [formGroup]="cdForm" (ngSubmit)="save()">
         <input type="text" formControlName="artist" placeholder="Artist" />
+        <div *ngIf="cdForm.controls.artist.invalid && (cdForm.controls.artist.dirty || cdForm.controls.artist.touched)">
+          <div *ngIf="cdForm.controls.artist.errors.required" class="danger">Artist is required.</div>
+        </div>
         <input type="email" formControlName="cover" placeholder="Cover" />
         <input type="text" formControlName="title" placeholder="Title" />
+        <div *ngIf="cdForm.controls.title.invalid && (cdForm.controls.title.dirty || cdForm.controls.title.touched)">
+          <div *ngIf="cdForm.controls.title.errors.required" class="danger">Title is required.</div>
+        </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
@@ -30,8 +42,14 @@
     <h2>Register your DVD</h2>
     <form [formGroup]="dvdForm" (ngSubmit)="save()">
         <input type="text" formControlName="synopsis" placeholder="Synopsis" />
+        <div *ngIf="dvdForm.controls.synopsis.invalid && (dvdForm.controls.synopsis.dirty || dvdForm.controls.synopsis.touched)">
+          <div *ngIf="dvdForm.controls.synopsis.errors.required" class="danger">Synopsis is required.</div>
+        </div>
         <input type="email" formControlName="cover" placeholder="Cover" />
         <input type="text" formControlName="title" placeholder="Title" />
+        <div *ngIf="dvdForm.controls.title.invalid && (dvdForm.controls.title.dirty || dvdForm.controls.title.touched)">
+          <div *ngIf="dvdForm.controls.title.errors.required" class="danger">Title is required.</div>
+        </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>

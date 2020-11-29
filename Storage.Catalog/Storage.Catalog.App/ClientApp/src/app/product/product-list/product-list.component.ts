@@ -25,7 +25,7 @@ export class ProductListComponent implements OnInit {
   constructor(readonly bookService: BookService,
     readonly cdService: CdService,
     readonly dvdService: DvdService) {
-      this.load();
+    this.load();
   }
 
   load() {
@@ -72,9 +72,9 @@ export class ProductListComponent implements OnInit {
   }
 
   deleteBook(book: any) {
-      this.bookService.delete(book).subscribe(() => {
-        this.load();
-      });
+    this.bookService.delete(book).subscribe(() => {
+      this.load();
+    });
   }
 
   deleteCd(cd: any) {
@@ -95,13 +95,24 @@ export class ProductListComponent implements OnInit {
     if (filterValue == "") {
       this.load();
     }
-    this.bookService.getAll().subscribe( () => {
-      this.books = this.books.filter(book => {
-         debugger;
-         return book.title.includes(filterValue)
+
+      this.bookService.getAll().subscribe(() => {
+        this.books = this.books.filter(book => {
+          return book.title.toLocaleLowerCase().includes(filterValue)
+        });
       });
-    });
     
+      this.cdService.getAll().subscribe(() => {
+        this.cds = this.cds.filter(cd => {
+          return cd.title.toLocaleLowerCase().includes(filterValue)
+        });
+      });
+
+      this.dvdService.getAll().subscribe(() => {
+        this.dvds = this.dvds.filter(dvd => {
+          return dvd.title.toLocaleLowerCase().includes(filterValue)
+        });
+      });
   }
 
 }

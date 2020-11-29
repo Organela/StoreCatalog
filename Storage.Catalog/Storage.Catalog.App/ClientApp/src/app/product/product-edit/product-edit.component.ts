@@ -48,13 +48,13 @@ export class ProductEditComponent implements OnInit {
         this.isCd = true;
         this.isDvd = false;
         this.isBook = false;
-        this.buildDvdForm(this.id);
+        this.buildCdForm(this.id);
       }
       if (this.router.url == `/dvd/${this.id}/edit` || this.router.url == '/dvd/new') {
         this.isDvd = true;
         this.isCd = false;
         this.isBook = false;
-        this.buildCdForm(this.id);
+        this.buildDvdForm(this.id);
       }
     });
 
@@ -81,9 +81,6 @@ export class ProductEditComponent implements OnInit {
         }
       });
     }
-
-
-
   }
 
   ngOnInit(): void {
@@ -96,31 +93,31 @@ export class ProductEditComponent implements OnInit {
       cover: null,
       title: [null, [Validators.required]],
       releaseDate: null,
-      image: [null, Validators.required],
+      image: null,
       imageName: null
     });
   }
 
-  buildDvdForm(id: number) {
+  buildCdForm(id: number) {
     this.cdForm = this.formBuilder.group({
       artist: [null, [Validators.required]],
       id,
       cover: null,
       title: [null, [Validators.required]],
       releaseDate: null,
-      image: [null, Validators.required],
+      image: null,
       imageName: null
     });
   }
 
-  buildCdForm(id: number) {
+  buildDvdForm(id: number) {
     this.dvdForm = this.formBuilder.group({
       synopsis: [null, [Validators.required]],
       id,
       cover: null,
       title: [null, [Validators.required]],
       releaseDate: null,
-      image: [null, Validators.required],
+      image: null,
       imageName: null
     });
 
@@ -147,14 +144,14 @@ export class ProductEditComponent implements OnInit {
 
       if (this.isCd) {
         this.cdForm.patchValue({
-          image:e.target.result,
+          image: e.target.result,
           imageName: file.name
         });
       }
 
       if (this.isDvd) {
         this.dvdForm.patchValue({
-          image:e.target.result,
+          image: e.target.result,
           imageName: file.name
         });
       }
@@ -183,17 +180,29 @@ export class ProductEditComponent implements OnInit {
   }
 
   save() {
-    //this.handlingData();
+    this.handlingData();
 
     if (this.isBook) {
+      if ((this.bookForm.controls.title.invalid && (this.bookForm.controls.title.dirty || this.bookForm.controls.title.touched))
+      || (this.bookForm.controls.author.invalid && (this.bookForm.controls.author.dirty || this.bookForm.controls.author.touched))) {
+        return;
+      }
       this.bookService.save(this.bookForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isCd) {
+      if (this.cdForm.controls.title.invalid && (this.cdForm.controls.title.dirty || this.cdForm.controls.title.touched)
+      ||(this.cdForm.controls.artist.invalid && (this.cdForm.controls.artist.dirty || this.cdForm.controls.artist.touched))) {
+        return;
+      }
       this.cdService.save(this.cdForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isDvd) {
+      if (this.dvdForm.controls.title.invalid && (this.dvdForm.controls.title.dirty || this.dvdForm.controls.title.touched)
+      || this.dvdForm.controls.synopsis.invalid && (this.dvdForm.controls.synopsis.dirty || this.dvdForm.controls.synopsis.touched)) {
+        return;
+      }
       this.dvdService.save(this.dvdForm.value).subscribe(() => this.router.navigate(['./']));
     }
 

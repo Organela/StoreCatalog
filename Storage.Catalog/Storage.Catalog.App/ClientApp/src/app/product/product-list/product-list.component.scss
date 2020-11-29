@@ -47,7 +47,7 @@ html {
     border-radius: 2px;
     box-shadow: 0 2px 3px rgba(0, 0, 0, .1);
     margin-bottom: 65px;
-    width: 100%;
+    width: 80%;
   }
   
   .card-media {
@@ -62,7 +62,7 @@ html {
     float: left;
     margin-top: 15px;
     position: relative;
-    width: 500px;
+    width: 300px;
     height: 200px;
   }
   
@@ -230,4 +230,5 @@ html {
 
   mat-form-field {
     margin-left: 510px;
+    width: 450px;
   }
