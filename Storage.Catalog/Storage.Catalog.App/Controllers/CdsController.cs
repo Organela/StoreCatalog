@@ -19,6 +19,13 @@ namespace Storage.Catalog.App.Controllers
             CdRepository = cdRepository;
         }
 
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetImage(int id)
+        {
+            var cd = await CdRepository.GetByIdAsync(id);
+            return File(cd.Image, "image/jpeg");
+        }
+
         // GET: api/Cds
         [HttpGet]
         public async Task<IList<Cd>> Get()
@@ -61,14 +68,16 @@ namespace Storage.Catalog.App.Controllers
 
         // PUT: api/Cds/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put()
         {
+            return Ok(await CdRepository.SaveAsync(await GetCdFromForm()));
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            return Ok(await CdRepository.DeleteAsync(id));
         }
     }
 }

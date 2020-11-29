@@ -7,6 +7,7 @@
     <button mat-button [matMenuTriggerFor]="menu" class="register">
       <span class="iconify" data-icon="mdi:plus-circle-outline" data-inline="false"></span>
     </button>
+
     <mat-menu #menu="matMenu">
       <button mat-menu-item [routerLink]="['./book/new']">Register book</button>
       <button mat-menu-item [routerLink]="['./cd/new']">Register cd</button>
@@ -50,7 +51,7 @@
     <div class="card u-clearfix" *ngFor="let cd of cds">     
       <div class="card-media">
         <img *ngIf="!cd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
-        <!--<img *ngIf="cd.image" [src]="cd.image"/>-->   
+        <img *ngIf="cd.image" [src]="'/api/cds/' + cd.id + '/image'" class="card-media-img"/> 
       </div>      
       <div class="card-body">
         <h2 class="card-body-heading">{{cd.title}}</h2>
@@ -76,7 +77,7 @@
     <div class="card u-clearfix" *ngFor="let dvd of dvds">     
       <div class="card-media">
         <img *ngIf="!dvd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
-        <!--<img *ngIf="dvd.image" [src]="dvd.image"/>-->   
+        <img *ngIf="dvd.image" [src]="'/api/dvds/' + dvd.id + '/image'" class="card-media-img"/>  
       </div>      
       <div class="card-body">
         <h2 class="card-body-heading">{{dvd.title}}</h2>
@@ -85,7 +86,7 @@
             <a [routerLink]="['./dvd', dvd.id, 'edit']">
 <!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
             </a>
-            <a (click)="deleteDvd(book)">
+            <a (click)="deleteDvd(dvd)">
               <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
             </a>
         </div>

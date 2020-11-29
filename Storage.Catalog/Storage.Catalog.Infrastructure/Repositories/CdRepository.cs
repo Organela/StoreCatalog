@@ -22,9 +22,12 @@ namespace Storage.Catalog.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
+            {
+                return sqlConnection.Execute(@"DELETE FROM Cd WHERE Id = @Id", new { id = id });
+            }
         }
 
         public IList<Cd> GetAll()
@@ -62,6 +65,17 @@ namespace Storage.Catalog.Infrastructure.Repositories
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
+                if (await GetByIdAsync(cd.Id) != null)
+                {
+                    return sqlConnection.Execute(@"UPDATE Cd SET 
+                                                 Artist = @Artist 
+                                                 ,Cover = @Cover 
+                                                 ,Title = @Title 
+                                                 ,ReleaseDate = @ReleaseDate
+                                                 ,Image = @Image
+                                                 WHERE Id = @Id", cd);
+                }
+
                 return sqlConnection.Execute(
                     @"INSERT INTO DBO.Cd(Artist, Cover, Title, ReleaseDate, Image)  
                     VALUES(@Artist, @Cover, @Title, @ReleaseDate, @Image)",

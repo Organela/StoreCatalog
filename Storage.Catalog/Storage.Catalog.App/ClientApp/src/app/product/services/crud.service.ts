@@ -60,6 +60,7 @@ export class CrudService<T extends any> {
     }
 
     update(product: any): Observable<HttpEvent<any>> {
+        debugger;
         return this.request(CrudService.createRequest(`api/${this.path}/${product.id}`, 'PUT', this.getProductFormData(product)));
     }
 

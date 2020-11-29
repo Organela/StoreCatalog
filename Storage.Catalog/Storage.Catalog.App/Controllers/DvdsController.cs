@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Storage.Catalog.Domain.Entities;
@@ -19,6 +17,13 @@ namespace Storage.Catalog.App.Controllers
         public DvdsController(IDvdRepository dvdRepository)
         {
             DvdRepository = dvdRepository;
+        }
+
+        [HttpGet("{id}/image")]
+        public async Task<IActionResult> GetImage(int id)
+        {
+            var dvd = await DvdRepository.GetByIdAsync(id);
+            return File(dvd.Image, "image/jpeg");
         }
 
         // GET: api/Dvds
@@ -63,14 +68,16 @@ namespace Storage.Catalog.App.Controllers
 
         // PUT: api/Dvds/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public async Task<IActionResult> Put()
         {
+            return Ok(await DvdRepository.SaveAsync(await GetDvdFromForm()));
         }
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
+            return Ok(await DvdRepository.DeleteAsync(id));
         }
     }
 }

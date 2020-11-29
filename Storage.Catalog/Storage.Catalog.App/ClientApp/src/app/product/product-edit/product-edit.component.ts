@@ -1,7 +1,7 @@
 import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { throwError } from 'rxjs';
+
 import { BookService } from '../services/book.service';
 import { CdService } from '../services/cd.service';
 import { DvdService } from '../services/dvd.service';
@@ -135,7 +135,6 @@ export class ProductEditComponent implements OnInit {
 
     reader.onload = (e) => {
       if (this.isBook) {
-        debugger;
         this.bookForm.patchValue({
           image: e.target.result,
           imageName: file.name

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using Storage.Catalog.Domain.Entities;
@@ -22,9 +21,12 @@ namespace Storage.Catalog.Infrastructure.Repositories
             throw new NotImplementedException();
         }
 
-        public Task<int> DeleteAsync(int id)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
+            {
+                return sqlConnection.Execute(@"DELETE FROM Dvd WHERE Id = @Id", new { id = id });
+            }
         }
 
         public IList<Dvd> GetAll()
@@ -62,6 +64,17 @@ namespace Storage.Catalog.Infrastructure.Repositories
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
+                if (await GetByIdAsync(dvd.Id) != null)
+                {
+                    return sqlConnection.Execute(@"UPDATE Dvd SET 
+                                                 Synopsis = @Synopsis 
+                                                 ,Cover = @Cover 
+                                                 ,Title = @Title 
+                                                 ,ReleaseDate = @ReleaseDate
+                                                 ,Image = @Image
+                                                 WHERE Id = @Id", dvd);
+                }
+
                 return sqlConnection.Execute(
                     @"INSERT INTO DBO.Dvd(Synopsis, Cover, Title, ReleaseDate, Image)  
                     VALUES(@Synopsis, @Cover, @Title, @ReleaseDate, @Image)",
