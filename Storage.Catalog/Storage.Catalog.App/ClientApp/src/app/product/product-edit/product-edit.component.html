@@ -1,0 +1,41 @@
+<div class="form-style-8" *ngIf="isBook === true">
+    <h2>Register your book</h2>
+    <form [formGroup]="bookForm" (ngSubmit)="save()">
+        <input type="text" formControlName="author" placeholder="Author" />
+        <input type="email" formControlName="cover" placeholder="Cover" />
+        <input type="text" formControlName="title" placeholder="Title" />
+        <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <input type="text" class="imageName" formControlName="imageName"/>
+        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
+        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br>      
+        <input type="submit" value="Save" /> 
+    </form>
+  </div>
+
+<div class="form-style-8" *ngIf="isCd === true">
+    <h2>Register your CD</h2>
+    <form [formGroup]="cdForm" (ngSubmit)="save()">
+        <input type="text" formControlName="artist" placeholder="Artist" />
+        <input type="email" formControlName="cover" placeholder="Cover" />
+        <input type="text" formControlName="title" placeholder="Title" />
+        <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <input type="text" class="imageName" formControlName="imageName"/>
+        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
+        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 
+        <input type="submit" value="Save" /> 
+    </form>
+  </div>
+
+<div class="form-style-8" *ngIf="isDvd === true">
+    <h2>Register your DVD</h2>
+    <form [formGroup]="dvdForm" (ngSubmit)="save()">
+        <input type="text" formControlName="synopsis" placeholder="Synopsis" />
+        <input type="email" formControlName="cover" placeholder="Cover" />
+        <input type="text" formControlName="title" placeholder="Title" />
+        <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <input type="text" class="imageName" formControlName="imageName"/>
+        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
+        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 
+        <input type="submit" value="Save" /> 
+    </form>
+  </div>

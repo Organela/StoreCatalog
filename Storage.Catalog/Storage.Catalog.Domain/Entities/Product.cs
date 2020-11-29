@@ -4,9 +4,10 @@ namespace Storage.Catalog.Domain
 {
     public class Product
     {
-        public virtual int Id { get; set; }
-        public virtual string Cover { get; set; }
-        public virtual string Title { get; set; }
-        public virtual DateTime ReleaseDate { get; set; }
+        public int Id { get; set; }
+        public string Cover { get; set; }
+        public string Title { get; set; }
+        public DateTime ReleaseDate { get; set; }
+        public byte[] Image { get; set; }
     }
 }

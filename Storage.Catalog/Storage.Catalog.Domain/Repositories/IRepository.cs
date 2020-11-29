@@ -7,14 +7,14 @@ namespace Storage.Catalog.Domain.Repositories
 {
     public interface IRepository<T>
     {
-        void Delete(T entity, string defaultConnection);
-        Task DeleteAsync(T entity, string defaultConnection);
-        IList<T> GetAll(string defaultConnection);
-        Task<IList<T>> GetAllAsync(string defaultConnection);
-        T GetById(int id, string defaultConnection);
-        Task<T> GetByIdAsync(int id, string defaultConnection);
-        T Save(T entity, string defaultConnection);
-        Task<T> SaveAsync(T entity, string defaultConnection);
+        void Delete(int id);
+        Task<int> DeleteAsync(int id);
+        IList<T> GetAll();
+        Task<IEnumerable<T>> GetAllAsync();
+        T GetById(int id);
+        Task<T> GetByIdAsync(int id);
+        T Save(T entity);
+        Task<int> SaveAsync(T entity);
         
     }
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Storage.Catalog.Domain.Entities;
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface IAdministratorRepository<T>: IRepository<T>
+    public interface IAdministratorRepository : IRepository<Administrator>
     {
     }
 }

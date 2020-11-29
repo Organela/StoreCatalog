@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Storage.Catalog.Domain.Entities
+﻿namespace Storage.Catalog.Domain.Entities
 {
     public class Administrator
     {
-        public virtual string Email { get; set; }
+        public string Email { get; set; }
 
-        public virtual string Password { get; set; }
+        public string Password { get; set; }
 
-        public virtual bool IsLogged { get; set; }
+        public bool IsLogged { get; set; }
     }
 }

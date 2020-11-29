@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface IProductRepository<T> : IRepository<T>
+    public interface IProductRepository : IRepository<Product>
     {
     }
 }

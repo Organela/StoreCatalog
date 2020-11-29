@@ -1,64 +1,90 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using Dapper;
-using System.Text;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
+using Dapper;
 using Storage.Catalog.Domain.Entities;
 using Storage.Catalog.Domain.Repositories;
-using System.Data.SqlClient;
-using System.Linq;
 
 namespace Storage.Catalog.Infrastructure.Repositories
 {
-    public class BookRepository : IBookRepository<Book>
+    public class BookRepository : IBookRepository
     {
-        public void Delete(Book entity, string defaultConnection)
+        private readonly ConnectionString ConnectionString;
+
+        public BookRepository(ConnectionString connectionString)
+        {
+            ConnectionString = connectionString;
+        }
+
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(Book entity, string defaultConnection)
+        public async Task<int> DeleteAsync(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public IList<Book> GetAll(string defaultConnection)
-        {
-            List<Book> books = new List<Book>();
-            using (IDbConnection db = new SqlConnection(defaultConnection/*ConfigurationManager.ConnectionStrings["ConnectionStrings"].ConnectionString)*/))
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                books = db.Query<Book>("Select * From Book").ToList();
+                return  sqlConnection.Execute(@"DELETE FROM Book WHERE Id = @Id", new { id = id });
             }
-            return books;
-
-            //throw new NotImplementedException();
         }
 
-        public Task<IList<Book>> GetAllAsync(string defaultConnection)
+        public IList<Book> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Book GetById(int id, string defaultConnection)
+        public async Task<IEnumerable<Book>> GetAllAsync()
+        {
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
+            {
+                return await sqlConnection.QueryAsync<Book>("SELECT * FROM Book");
+            }
+        }
+
+        Book IRepository<Book>.GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Book> GetByIdAsync(int id, string defaultConnection)
+        public async Task<Book> GetByIdAsync(int id)
+        {
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
+            {
+                return sqlConnection.QueryFirstOrDefault<Book>("SELECT * FROM Book WHERE Id = @id", new { Id = id});
+            }
+          
+        }
+
+        public Book Save(Book book)
         {
             throw new NotImplementedException();
         }
 
-        public Book Save(Book entity, string defaultConnection)
-        {
-            throw new NotImplementedException();
+        public async Task<int> SaveAsync(Book book)
+        {// Voltar e alterar isert para q seja possível adicionar uma imagem!
+            using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
+            {
+                if(await GetByIdAsync(book.Id) != null)
+                {
+                    return sqlConnection.Execute(@"UPDATE Book SET 
+                                                 Author = @Author 
+                                                 ,Cover = @Cover 
+                                                 ,Title = @Title 
+                                                 ,ReleaseDate = @ReleaseDate
+                                                 ,Image = @Image
+                                                 WHERE Id = @Id", book);
+                }
+
+                return sqlConnection.Execute(
+                    @"INSERT INTO DBO.Book(Author, Cover, Title, ReleaseDate, Image)  
+                    VALUES(@Author, @Cover, @Title, @ReleaseDate, @Image)",
+                    book);
+            }
+
         }
 
-        public Task<Book> SaveAsync(Book entity, string defaultConnection)
-        {
-            throw new NotImplementedException();
-        }
+     
     }
 }

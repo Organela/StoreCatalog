@@ -33,13 +33,13 @@ namespace Storage.Catalog.App
 
             services.AddMvc();
 
-            services.AddTransient<IProductRepository<Product>, ProductRepository<Product>>();
+            services.AddTransient<IProductRepository, ProductRepository>();
 
-            services.AddTransient<IBookRepository<Book>, BookRepository>();
+            services.AddTransient<IBookRepository, BookRepository>();
             
-            services.AddTransient<ICdRepository<Cd>, CdRepository>();
+            services.AddTransient<ICdRepository, CdRepository>();
 
-            services.AddTransient<IDvdRepository<Dvd>, DvdRepository>();
+            services.AddTransient<IDvdRepository, DvdRepository>();
 
             services.AddSingleton(Configuration.GetSection("ConnectionString").Get<ConnectionString>());
 

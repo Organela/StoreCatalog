@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using Storage.Catalog.Domain.Entities;
 using Storage.Catalog.Domain.Repositories;
 
@@ -13,31 +14,51 @@ namespace Storage.Catalog.App.Controllers
     [ApiController]
     public class DvdsController : ControllerBase
     {
-        private readonly IDvdRepository<Dvd> _dvdRepository;
+        private readonly IDvdRepository DvdRepository;
 
-        public DvdsController(IDvdRepository<Dvd> dvdRepository)
+        public DvdsController(IDvdRepository dvdRepository)
         {
-            _dvdRepository = dvdRepository;
+            DvdRepository = dvdRepository;
         }
 
         // GET: api/Dvds
         [HttpGet]
-        public IEnumerable<string> Get()
+        public async Task<IList<Dvd>> Get()
         {
-            return new string[] { "value1", "value2" };
+            return (await DvdRepository.GetAllAsync()).ToList();
         }
 
         // GET: api/Dvds/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            return Ok(await DvdRepository.GetByIdAsync(id));
         }
 
         // POST: api/Dvds
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<IActionResult> Post()
         {
+            return Ok(await DvdRepository.SaveAsync(await GetDvdFromForm()));
+        }
+
+        private async Task<Dvd> GetDvdFromForm()
+        {
+            var dvd = JsonConvert.DeserializeObject<Dvd>(Request.Form["productData"]);
+
+            if (!Request.Form.Files.Any())
+            {
+                return dvd;
+            }
+
+            var formFileStream = Request.Form.Files.First().OpenReadStream();
+            var buffer = new byte[formFileStream.Length];
+
+            await formFileStream.ReadAsync(buffer, 0, buffer.Length);
+
+            dvd.Image = buffer;
+
+            return dvd;
         }
 
         // PUT: api/Dvds/5

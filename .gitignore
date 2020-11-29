@@ -9,7 +9,8 @@ wwwroot/styles/**
 wwwroot/dist/main-client.*
 ClientApp/dist/main-server.*
 
-node_modules/**
+node_modules
+Images
 [Ss]cripts/[Aa]pp/*.js
 [Ss]cripts/[Aa]pp_old/*.js
 

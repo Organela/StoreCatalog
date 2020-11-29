@@ -1,0 +1,98 @@
+<div>
+    <button mat-button (click)="setShowAll()">Show all</button>
+    <button mat-button (click)="setShowBooks()">Show books</button>
+    <button mat-button (click)="setShowCds()">Show cds</button>
+    <button mat-button (click)="setShowDvds()">Show dvds</button>
+    
+    <button mat-button [matMenuTriggerFor]="menu" class="register">
+      <span class="iconify" data-icon="mdi:plus-circle-outline" data-inline="false"></span>
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item [routerLink]="['./book/new']">Register book</button>
+      <button mat-menu-item [routerLink]="['./cd/new']">Register cd</button>
+      <button mat-menu-item [routerLink]="['./dvd/new']">Register dvd</button>
+    </mat-menu>
+</div>
+
+<mat-form-field class="filter">
+  <mat-label>Filter by title</mat-label>
+  <input matInput (keyup)="applyFilter($event)" placeholder="Search product" #input>
+</mat-form-field>
+
+<div class="container" *ngIf="isBook === true || isShowAll == true">
+    <h1>Books</h1>
+    <div class="card u-clearfix" *ngFor="let book of books">     
+      <div class="card-media">
+        <img *ngIf="!book.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
+        <img *ngIf="book.image" [src]="'/api/books/' + book.id + '/image'" class="card-media-img"/>
+      </div>      
+      <div class="card-body">
+        <h2 class="card-body-heading">{{book.title}}</h2>
+        <div class="card-body-options">
+          <div class="card-body-option card-body-option-favorite">
+            <a [routerLink]="['./book', book.id, 'edit']">
+<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
+            </a>
+            <a (click)="deleteBook(book)">
+              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
+            </a>
+        </div>
+        </div>
+        <p>Author: {{book.author}}</p>
+        <p>Cover: {{book.cover}}</p>
+        <p>Release date: {{book.releaseDate}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="isCd === true || isShowAll == true">
+    <h1>Cds</h1>
+    <div class="card u-clearfix" *ngFor="let cd of cds">     
+      <div class="card-media">
+        <img *ngIf="!cd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
+        <!--<img *ngIf="cd.image" [src]="cd.image"/>-->   
+      </div>      
+      <div class="card-body">
+        <h2 class="card-body-heading">{{cd.title}}</h2>
+        <div class="card-body-options">
+          <div class="card-body-option card-body-option-favorite">
+            <a [routerLink]="['./cd', cd.id, 'edit']">
+<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
+            </a>
+            <a (click)="deleteCd(cd)">
+              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
+            </a> 
+        </div>
+        </div>
+        <p>Artist: {{cd.artist}}</p>
+        <p>Cover: {{cd.cover}}</p>
+        <p>Release date: {{cd.releaseDate}}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="container" *ngIf="isDvd === true || isShowAll == true">
+    <h1>Dvds</h1>
+    <div class="card u-clearfix" *ngFor="let dvd of dvds">     
+      <div class="card-media">
+        <img *ngIf="!dvd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
+        <!--<img *ngIf="dvd.image" [src]="dvd.image"/>-->   
+      </div>      
+      <div class="card-body">
+        <h2 class="card-body-heading">{{dvd.title}}</h2>
+        <div class="card-body-options">
+          <div class="card-body-option card-body-option-favorite">
+            <a [routerLink]="['./dvd', dvd.id, 'edit']">
+<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
+            </a>
+            <a (click)="deleteDvd(book)">
+              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
+            </a>
+        </div>
+        </div>
+        <p>Synopsis: {{dvd.synopsis}}</p>
+        <p>Cover: {{dvd.cover}}</p>
+        <p>Release date: {{dvd.releaseDate}}</p>
+      </div>
+    </div>
+  </div>

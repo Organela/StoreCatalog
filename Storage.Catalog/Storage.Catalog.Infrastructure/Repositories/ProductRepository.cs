@@ -1,49 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Storage.Catalog.Domain;
 using Storage.Catalog.Domain.Repositories;
 
 namespace Storage.Catalog.Infrastructure.Repositories
 {
-    public class ProductRepository<T> : IProductRepository<T>
+    public class ProductRepository : IProductRepository
     {
-        public void Delete(T entity, string defaultConnection)
+        public void Delete(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task DeleteAsync(T entity, string defaultConnection)
+        public Task<int> DeleteAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IList<T> GetAll(string defaultConnection)
+        public IList<Product> GetAll()
         {
             throw new NotImplementedException();
         }
 
-        public Task<IList<T>> GetAllAsync(string defaultConnection)
+        public Task<IEnumerable<Product>> GetAllAsync()
         {
             throw new NotImplementedException();
         }
 
-        public T GetById(int id, string defaultConnection)
+        public Product GetById(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> GetByIdAsync(int id, string defaultConnection)
+        public Task<Product> GetByIdAsync(int id)
         {
             throw new NotImplementedException();
         }
 
-        public T Save(T entity, string defaultConnection)
+        public Product Save(Product entity)
         {
             throw new NotImplementedException();
         }
 
-        public Task<T> SaveAsync(T entity, string defaultConnection)
+        public Task<int> SaveAsync(Product entity)
         {
             throw new NotImplementedException();
         }

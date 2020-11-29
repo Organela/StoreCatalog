@@ -14,11 +14,11 @@ namespace Storage.Catalog.App.Controllers
     [ApiController]
     public class ProductsController : ControllerBase
     {
-        private readonly IProductRepository<Product> _productRepository;
+        private readonly IProductRepository ProductRepository;
 
-        public ProductsController(IProductRepository<Product> productRepository)
+        public ProductsController(IProductRepository productRepository)
         {
-            _productRepository = productRepository;
+            ProductRepository = productRepository;
         }
 
         // GET: api/Books
@@ -27,7 +27,7 @@ namespace Storage.Catalog.App.Controllers
         {             
            // var products = new List<Product>();
             //products = _productRepository.GetAll();
-            return _productRepository.GetAll("Batatinha"); 
+            return ProductRepository.GetAll(); 
             
         }
 
