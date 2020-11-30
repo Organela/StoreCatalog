@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Storage.Catalog.Domain.Entities;
@@ -17,48 +18,28 @@ namespace Storage.Catalog.Infrastructure.Repositories
             ConnectionString = connectionString;
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<int> DeleteAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return sqlConnection.Execute(@"DELETE FROM Cd WHERE Id = @Id", new { id = id });
+                return await sqlConnection.ExecuteAsync(@"DELETE FROM Cd WHERE Id = @Id", new { Id = id });
             }
-        }
-
-        public IList<Cd> GetAll()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Cd>> GetAllAsync()
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return await sqlConnection.QueryAsync<Cd>("SELECT * FROM Cd");
+                return (await sqlConnection.QueryAsync<Cd>("SELECT * FROM Cd")).ToList();
             }
-        }
-
-        public Cd GetById(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Cd> GetByIdAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return sqlConnection.QueryFirstOrDefault<Cd>("SELECT * FROM Cd WHERE Id = @id", new { Id = id });
+                return await sqlConnection.QueryFirstOrDefaultAsync<Cd>("SELECT * FROM Cd WHERE Id = @id", new { Id = id });
             }
-        }
-
-        public Cd Save(Cd entity)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> SaveAsync(Cd cd)
@@ -67,7 +48,7 @@ namespace Storage.Catalog.Infrastructure.Repositories
             {
                 if (await GetByIdAsync(cd.Id) != null)
                 {
-                    return sqlConnection.Execute(@"UPDATE Cd SET 
+                    return await sqlConnection.ExecuteAsync(@"UPDATE Cd SET 
                                                  Artist = @Artist 
                                                  ,Cover = @Cover 
                                                  ,Title = @Title 
@@ -76,7 +57,7 @@ namespace Storage.Catalog.Infrastructure.Repositories
                                                  WHERE Id = @Id", cd);
                 }
 
-                return sqlConnection.Execute(
+                return await sqlConnection.ExecuteAsync(
                     @"INSERT INTO DBO.Cd(Artist, Cover, Title, ReleaseDate, Image)  
                     VALUES(@Artist, @Cover, @Title, @ReleaseDate, @Image)",
                     cd);

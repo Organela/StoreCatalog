@@ -28,9 +28,9 @@ namespace Storage.Catalog.App.Controllers
 
         // GET: api/Cds
         [HttpGet]
-        public async Task<IList<Cd>> Get()
+        public async Task<IEnumerable<Cd>> Get()
         {
-            return (await CdRepository.GetAllAsync()).ToList();
+            return await CdRepository.GetAllAsync();
         }
 
         // GET: api/Cds/5

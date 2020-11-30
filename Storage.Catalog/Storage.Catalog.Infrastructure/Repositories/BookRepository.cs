@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Storage.Catalog.Domain.Entities;
@@ -17,58 +17,37 @@ namespace Storage.Catalog.Infrastructure.Repositories
             ConnectionString = connectionString;
         }
 
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<int> DeleteAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return  sqlConnection.Execute(@"DELETE FROM Book WHERE Id = @Id", new { id = id });
+                return await sqlConnection.ExecuteAsync(@"DELETE FROM Book WHERE Id = @Id", new { Id = id });
             }
-        }
-
-        public IList<Book> GetAll()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Book>> GetAllAsync()
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return await sqlConnection.QueryAsync<Book>("SELECT * FROM Book");
+                return (await sqlConnection.QueryAsync<Book>("SELECT * FROM Book")).ToList();
             }
-        }
-
-        Book IRepository<Book>.GetById(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Book> GetByIdAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return sqlConnection.QueryFirstOrDefault<Book>("SELECT * FROM Book WHERE Id = @id", new { Id = id});
+                return await sqlConnection.QueryFirstOrDefaultAsync<Book>("SELECT * FROM Book WHERE Id = @id", new { Id = id });
             }
-          
-        }
-
-        public Book Save(Book book)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> SaveAsync(Book book)
-        {// Voltar e alterar isert para q seja possível adicionar uma imagem!
+        {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                if(await GetByIdAsync(book.Id) != null)
+                if (await GetByIdAsync(book.Id) != null)
                 {
-                    return sqlConnection.Execute(@"UPDATE Book SET 
+                    return await sqlConnection.ExecuteAsync(@"UPDATE Book SET 
                                                  Author = @Author 
                                                  ,Cover = @Cover 
                                                  ,Title = @Title 
@@ -77,14 +56,11 @@ namespace Storage.Catalog.Infrastructure.Repositories
                                                  WHERE Id = @Id", book);
                 }
 
-                return sqlConnection.Execute(
+                return await sqlConnection.ExecuteAsync(
                     @"INSERT INTO DBO.Book(Author, Cover, Title, ReleaseDate, Image)  
                     VALUES(@Author, @Cover, @Title, @ReleaseDate, @Image)",
                     book);
             }
-
         }
-
-     
     }
 }

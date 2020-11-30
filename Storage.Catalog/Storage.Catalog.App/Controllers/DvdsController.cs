@@ -28,9 +28,9 @@ namespace Storage.Catalog.App.Controllers
 
         // GET: api/Dvds
         [HttpGet]
-        public async Task<IList<Dvd>> Get()
+        public async Task<IEnumerable<Dvd>> Get()
         {
-            return (await DvdRepository.GetAllAsync()).ToList();
+            return await DvdRepository.GetAllAsync();
         }
 
         // GET: api/Dvds/5

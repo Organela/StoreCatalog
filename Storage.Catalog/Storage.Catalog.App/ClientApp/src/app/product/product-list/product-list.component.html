@@ -15,13 +15,14 @@
     </mat-menu>
 </div>
 
-<mat-form-field class="filter">
-  <mat-label>Filter by title</mat-label>
-  <input matInput (keyup)="applyFilter($event)" placeholder="Search product" #input>
-</mat-form-field>
 
-<div class="container" *ngIf="isBook === true || isShowAll == true">
+
+<div class="container" *ngIf="(isBook === true || isShowAll == true) && books?.length">
     <h1>Books</h1>
+    <mat-form-field class="filter">
+      <mat-label>Filter by title</mat-label>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search product" #input>
+    </mat-form-field>
     <div class="card u-clearfix" *ngFor="let book of books">     
       <div class="card-media">
         <img *ngIf="!book.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
@@ -46,7 +47,7 @@
     </div>
   </div>
 
-  <div class="container" *ngIf="isCd === true || isShowAll == true">
+  <div class="container" *ngIf="(isCd === true || isShowAll == true) && cds?.length">
     <h1>Cds</h1>
     <div class="card u-clearfix" *ngFor="let cd of cds">     
       <div class="card-media">
@@ -72,7 +73,7 @@
     </div>
   </div>
 
-  <div class="container" *ngIf="isDvd === true || isShowAll == true">
+  <div class="container" *ngIf="(isDvd === true || isShowAll == true) && dvds?.length">
     <h1>Dvds</h1>
     <div class="card u-clearfix" *ngFor="let dvd of dvds">     
       <div class="card-media">

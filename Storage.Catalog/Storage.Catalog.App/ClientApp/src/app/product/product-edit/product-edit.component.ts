@@ -23,6 +23,7 @@ export class ProductEditComponent implements OnInit {
   isCd = false;
   isDvd = false;
   isValid = false;
+  showErrors = false;
 
   file: any;
   id: number;
@@ -154,8 +155,6 @@ export class ProductEditComponent implements OnInit {
           imageName: file.name
         });
       }
-
-      // need to run CD since file load runs outside of zone
       this.cd.markForCheck();
       this.isValid = true;
     }
@@ -179,29 +178,30 @@ export class ProductEditComponent implements OnInit {
   }
 
   save() {
-    this.handlingData();
+    
+    this.showErrors = true;
 
     if (this.isBook) {
-      if ((this.bookForm.controls.title.invalid && (this.bookForm.controls.title.dirty || this.bookForm.controls.title.touched))
-      || (this.bookForm.controls.author.invalid && (this.bookForm.controls.author.dirty || this.bookForm.controls.author.touched))) {
+      if (this.bookForm.controls.title.invalid || this.bookForm.controls.author.invalid) {
         return;
       }
+      this.handlingData();
       this.bookService.save(this.bookForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isCd) {
-      if (this.cdForm.controls.title.invalid && (this.cdForm.controls.title.dirty || this.cdForm.controls.title.touched)
-      ||(this.cdForm.controls.artist.invalid && (this.cdForm.controls.artist.dirty || this.cdForm.controls.artist.touched))) {
+      if (this.cdForm.controls.title.invalid || this.cdForm.controls.artist.invalid ) {
         return;
       }
+      this.handlingData();
       this.cdService.save(this.cdForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isDvd) {
-      if (this.dvdForm.controls.title.invalid && (this.dvdForm.controls.title.dirty || this.dvdForm.controls.title.touched)
-      || this.dvdForm.controls.synopsis.invalid && (this.dvdForm.controls.synopsis.dirty || this.dvdForm.controls.synopsis.touched)) {
+      if (this.dvdForm.controls.title.invalid || this.dvdForm.controls.synopsis.invalid) {
         return;
       }
+      this.handlingData();
       this.dvdService.save(this.dvdForm.value).subscribe(() => this.router.navigate(['./']));
     }
 

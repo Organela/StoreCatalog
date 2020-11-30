@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using Storage.Catalog.Domain.Entities;
@@ -16,48 +17,29 @@ namespace Storage.Catalog.Infrastructure.Repositories
         {
             ConnectionString = connectionString;
         }
-        public void Delete(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<int> DeleteAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return sqlConnection.Execute(@"DELETE FROM Dvd WHERE Id = @Id", new { id = id });
+                return await sqlConnection.ExecuteAsync(@"DELETE FROM Dvd WHERE Id = @Id", new { Id = id });
             }
-        }
-
-        public IList<Dvd> GetAll()
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<IEnumerable<Dvd>> GetAllAsync()
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return await sqlConnection.QueryAsync<Dvd>("SELECT * FROM Dvd");
+                return (await sqlConnection.QueryAsync<Dvd>("SELECT * FROM Dvd")).ToList(); 
             }
-        }
-
-        public Dvd GetById(int id)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<Dvd> GetByIdAsync(int id)
         {
             using (var sqlConnection = new SqlConnection(ConnectionString.DefaultConnection))
             {
-                return sqlConnection.QueryFirstOrDefault<Dvd>("SELECT * FROM Dvd WHERE Id = @id", new { Id = id });
+                return await sqlConnection.QueryFirstOrDefaultAsync<Dvd>("SELECT * FROM Dvd WHERE Id = @id", new { Id = id });
             }
-        }
-
-        public Dvd Save(Dvd entity)
-        {
-            throw new NotImplementedException();
         }
 
         public async Task<int> SaveAsync(Dvd dvd)
@@ -66,7 +48,7 @@ namespace Storage.Catalog.Infrastructure.Repositories
             {
                 if (await GetByIdAsync(dvd.Id) != null)
                 {
-                    return sqlConnection.Execute(@"UPDATE Dvd SET 
+                    return await sqlConnection.ExecuteAsync(@"UPDATE Dvd SET 
                                                  Synopsis = @Synopsis 
                                                  ,Cover = @Cover 
                                                  ,Title = @Title 
@@ -75,7 +57,7 @@ namespace Storage.Catalog.Infrastructure.Repositories
                                                  WHERE Id = @Id", dvd);
                 }
 
-                return sqlConnection.Execute(
+                return await sqlConnection.ExecuteAsync(
                     @"INSERT INTO DBO.Dvd(Synopsis, Cover, Title, ReleaseDate, Image)  
                     VALUES(@Synopsis, @Cover, @Title, @ReleaseDate, @Image)",
                     dvd);

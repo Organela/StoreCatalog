@@ -29,9 +29,9 @@ namespace Storage.Catalog.App.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<IList<Book>> Get()
+        public async Task<IEnumerable<Book>> Get()
         {
-            return (await BookRepository.GetAllAsync()).ToList();
+            return await BookRepository.GetAllAsync();
         }
 
         // GET: api/Books/5
