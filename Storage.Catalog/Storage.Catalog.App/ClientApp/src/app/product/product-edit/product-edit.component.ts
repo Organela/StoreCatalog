@@ -25,16 +25,15 @@ export class ProductEditComponent implements OnInit {
   isValid = false;
   showErrors = false;
 
-  file: any;
   id: number;
 
   constructor(private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private bookService: BookService,
-    private cdService: CdService,
-    private dvdService: DvdService,
-    private cd: ChangeDetectorRef) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private bookService: BookService,
+              private cdService: CdService,
+              private dvdService: DvdService,
+              private cd: ChangeDetectorRef) {
 
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
@@ -121,7 +120,6 @@ export class ProductEditComponent implements OnInit {
       image: null,
       imageName: null
     });
-
   }
 
 
@@ -174,7 +172,6 @@ export class ProductEditComponent implements OnInit {
         releaseDate: new Date(this.bookForm.controls['releaseDate'].value)
       });
     }
-
   }
 
   save() {
@@ -204,6 +201,5 @@ export class ProductEditComponent implements OnInit {
       this.handlingData();
       this.dvdService.save(this.dvdForm.value).subscribe(() => this.router.navigate(['./']));
     }
-
   }
 }

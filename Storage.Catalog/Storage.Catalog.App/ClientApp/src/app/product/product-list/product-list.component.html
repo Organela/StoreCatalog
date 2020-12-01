@@ -3,19 +3,16 @@
     <button mat-button (click)="setShowBooks()">Show books</button>
     <button mat-button (click)="setShowCds()">Show cds</button>
     <button mat-button (click)="setShowDvds()">Show dvds</button>
-    
-    <button mat-button [matMenuTriggerFor]="menu" class="register">
-      <span class="iconify" data-icon="mdi:plus-circle-outline" data-inline="false"></span>
-    </button>
 
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item [routerLink]="['./book/new']">Register book</button>
-      <button mat-menu-item [routerLink]="['./cd/new']">Register cd</button>
-      <button mat-menu-item [routerLink]="['./dvd/new']">Register dvd</button>
-    </mat-menu>
+    <div class="dropdown">
+      <button class="dropbtn">Register</button>
+      <div class="dropdown-content">
+        <a href="#" [routerLink]="['./book/new']">Book</a>
+        <a href="#" [routerLink]="['./cd/new']">Cd</a>
+        <a href="#" [routerLink]="['./dvd/new']">Dvd</a>
+      </div>
+    </div>
 </div>
-
-
 
 <div class="container" *ngIf="(isBook === true || isShowAll == true) && books?.length">
     <h1>Books</h1>

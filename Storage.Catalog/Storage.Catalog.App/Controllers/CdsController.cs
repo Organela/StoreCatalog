@@ -26,21 +26,18 @@ namespace Storage.Catalog.App.Controllers
             return File(cd.Image, "image/jpeg");
         }
 
-        // GET: api/Cds
         [HttpGet]
         public async Task<IEnumerable<Cd>> Get()
         {
             return await CdRepository.GetAllAsync();
         }
 
-        // GET: api/Cds/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await CdRepository.GetByIdAsync(id));
         }
 
-        // POST: api/Cds
         [HttpPost]
         public async Task<IActionResult> Post()
         {
@@ -66,17 +63,19 @@ namespace Storage.Catalog.App.Controllers
             return cd;
         }
 
-        // PUT: api/Cds/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put()
         {
             return Ok(await CdRepository.SaveAsync(await GetCdFromForm()));
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (CdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
             return Ok(await CdRepository.DeleteAsync(id));
         }
     }

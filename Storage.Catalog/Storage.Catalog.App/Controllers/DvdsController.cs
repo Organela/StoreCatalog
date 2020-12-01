@@ -26,21 +26,18 @@ namespace Storage.Catalog.App.Controllers
             return File(dvd.Image, "image/jpeg");
         }
 
-        // GET: api/Dvds
         [HttpGet]
         public async Task<IEnumerable<Dvd>> Get()
         {
             return await DvdRepository.GetAllAsync();
         }
 
-        // GET: api/Dvds/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await DvdRepository.GetByIdAsync(id));
         }
 
-        // POST: api/Dvds
         [HttpPost]
         public async Task<IActionResult> Post()
         {
@@ -66,17 +63,20 @@ namespace Storage.Catalog.App.Controllers
             return dvd;
         }
 
-        // PUT: api/Dvds/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put()
         {
             return Ok(await DvdRepository.SaveAsync(await GetDvdFromForm()));
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if (DvdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
             return Ok(await DvdRepository.DeleteAsync(id));
         }
     }

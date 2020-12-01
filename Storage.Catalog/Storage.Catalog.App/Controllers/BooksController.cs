@@ -26,22 +26,18 @@ namespace Storage.Catalog.App.Controllers
             return File(book.Image, "image/jpeg");
         }
 
-
-        // GET: api/Books
         [HttpGet]
         public async Task<IEnumerable<Book>> Get()
         {
             return await BookRepository.GetAllAsync();
         }
 
-        // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {
             return Ok(await BookRepository.GetByIdAsync(id));
         }
 
-        // POST: api/Books
         [HttpPost]
         public async Task<IActionResult> Post()
         {
@@ -67,17 +63,19 @@ namespace Storage.Catalog.App.Controllers
             return book;
         }
 
-        // PUT: api/Books/5
         [HttpPut("{id}")]
         public async Task<IActionResult> Put()
         {
             return Ok(await BookRepository.SaveAsync(await GetBookFromForm()));
         }
 
-        // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
+            if(BookRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
             return Ok(await BookRepository.DeleteAsync(id));
         }
     }

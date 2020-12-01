@@ -23,11 +23,10 @@ export class CrudService<T extends any> {
         if (!product.id) {
             delete product.id;
         }
-        
 
         const fileData = product.image;
 
-        const x = new Blob([fileData], {type: product.type});
+        const x = new Blob([fileData], { type: product.type });
 
         if (fileData) {
             formData.append('0', x);
@@ -60,7 +59,6 @@ export class CrudService<T extends any> {
     }
 
     update(product: any): Observable<HttpEvent<any>> {
-        debugger;
         return this.request(CrudService.createRequest(`api/${this.path}/${product.id}`, 'PUT', this.getProductFormData(product)));
     }
 

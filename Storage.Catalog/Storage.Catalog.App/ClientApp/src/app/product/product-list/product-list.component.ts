@@ -23,9 +23,9 @@ export class ProductListComponent implements OnInit {
   isShowAll = true;
 
   constructor(readonly bookService: BookService,
-    readonly cdService: CdService,
-    readonly dvdService: DvdService) {
-    this.load();
+              readonly cdService: CdService,
+              readonly dvdService: DvdService) {
+              this.load();
   }
 
   load() {
