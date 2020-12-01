@@ -41,7 +41,35 @@ namespace Storage.Catalog.App.Controllers
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            return Ok(await CdRepository.SaveAsync(await GetCdFromForm()));
+            var cd = await GetCdFromForm();
+            cd.Id = await CdRepository.SaveAsync(cd);
+            return Created($"/cds/{cd.Id}", cd);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id)
+        {
+            if (CdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await CdRepository.SaveAsync(await GetCdFromForm());
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (CdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await CdRepository.DeleteAsync(id);
+
+            return Ok();
         }
 
         private async Task<Cd> GetCdFromForm()
@@ -61,22 +89,6 @@ namespace Storage.Catalog.App.Controllers
             cd.Image = buffer;
 
             return cd;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put()
-        {
-            return Ok(await CdRepository.SaveAsync(await GetCdFromForm()));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (CdRepository.GetByIdAsync(id) == null)
-            {
-                return NotFound();
-            }
-            return Ok(await CdRepository.DeleteAsync(id));
         }
     }
 }

@@ -11,6 +11,9 @@
           <div *ngIf="bookForm.controls.title.errors.required" class="danger">Title is required.</div>
         </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <div *ngIf="bookForm.controls.releaseDate.invalid && showErrors">
+          <div *ngIf="bookForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
+        </div>
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
         <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br>      
@@ -31,6 +34,9 @@
           <div *ngIf="cdForm.controls.title.errors.required" class="danger">Title is required.</div>
         </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <div *ngIf="cdForm.controls.releaseDate.invalid && showErrors">
+          <div *ngIf="cdForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
+        </div>
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
         <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 
@@ -51,6 +57,9 @@
           <div *ngIf="dvdForm.controls.title.errors.required" class="danger">Title is required.</div>
         </div>
         <input type="text" formControlName="releaseDate" placeholder="Release date" />
+        <div *ngIf="dvdForm.controls.releaseDate.invalid && showErrors">
+          <div *ngIf="dvdForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
+        </div>
         <input type="text" class="imageName" formControlName="imageName"/>
         <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
         <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 

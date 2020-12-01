@@ -40,8 +40,36 @@ namespace Storage.Catalog.App.Controllers
 
         [HttpPost]
         public async Task<IActionResult> Post()
+        {          
+            var book = await GetBookFromForm();
+            book.Id = await BookRepository.SaveAsync(book);
+            return Created($"/books/{book.Id}", book);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id )
         {
-            return Ok(await BookRepository.SaveAsync(await GetBookFromForm()));
+            if (BookRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await BookRepository.SaveAsync(await GetBookFromForm());
+            
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(BookRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await BookRepository.DeleteAsync(id);
+
+            return Ok();
         }
 
         private async Task<Book> GetBookFromForm()
@@ -61,22 +89,6 @@ namespace Storage.Catalog.App.Controllers
             book.Image = buffer;
 
             return book;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put()
-        {
-            return Ok(await BookRepository.SaveAsync(await GetBookFromForm()));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if(BookRepository.GetByIdAsync(id) == null)
-            {
-                return NotFound();
-            }
-            return Ok(await BookRepository.DeleteAsync(id));
         }
     }
 }

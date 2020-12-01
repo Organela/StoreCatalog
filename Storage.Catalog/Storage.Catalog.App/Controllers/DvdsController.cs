@@ -41,7 +41,35 @@ namespace Storage.Catalog.App.Controllers
         [HttpPost]
         public async Task<IActionResult> Post()
         {
-            return Ok(await DvdRepository.SaveAsync(await GetDvdFromForm()));
+            var dvd = await GetDvdFromForm();
+            dvd.Id = await DvdRepository.SaveAsync(dvd);
+            return Created($"/dvds/{dvd.Id}", dvd);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id)
+        {
+            if (DvdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await DvdRepository.SaveAsync(await GetDvdFromForm());
+
+            return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if (DvdRepository.GetByIdAsync(id) == null)
+            {
+                return NotFound();
+            }
+
+            await DvdRepository.DeleteAsync(id);
+
+            return Ok();
         }
 
         private async Task<Dvd> GetDvdFromForm()
@@ -61,23 +89,6 @@ namespace Storage.Catalog.App.Controllers
             dvd.Image = buffer;
 
             return dvd;
-        }
-
-        [HttpPut("{id}")]
-        public async Task<IActionResult> Put()
-        {
-            return Ok(await DvdRepository.SaveAsync(await GetDvdFromForm()));
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(int id)
-        {
-            if (DvdRepository.GetByIdAsync(id) == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(await DvdRepository.DeleteAsync(id));
         }
     }
 }

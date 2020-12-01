@@ -92,7 +92,7 @@ export class ProductEditComponent implements OnInit {
       id,
       cover: null,
       title: [null, [Validators.required]],
-      releaseDate: null,
+      releaseDate: [null, [Validators.required]],
       image: null,
       imageName: null
     });
@@ -104,7 +104,7 @@ export class ProductEditComponent implements OnInit {
       id,
       cover: null,
       title: [null, [Validators.required]],
-      releaseDate: null,
+      releaseDate: [null, [Validators.required]],
       image: null,
       imageName: null
     });
@@ -116,7 +116,7 @@ export class ProductEditComponent implements OnInit {
       id,
       cover: null,
       title: [null, [Validators.required]],
-      releaseDate: null,
+      releaseDate: [null, [Validators.required]],
       image: null,
       imageName: null
     });
@@ -165,40 +165,28 @@ export class ProductEditComponent implements OnInit {
     this.imageInputRef.nativeElement.click();
   }
 
-  handlingData() {
-
-    if (this.isBook) {
-      this.bookForm.patchValue({
-        releaseDate: new Date(this.bookForm.controls['releaseDate'].value)
-      });
-    }
-  }
-
   save() {
     
     this.showErrors = true;
 
     if (this.isBook) {
-      if (this.bookForm.controls.title.invalid || this.bookForm.controls.author.invalid) {
+      if (this.bookForm.controls.title.invalid || this.bookForm.controls.author.invalid || this.bookForm.controls.releaseDate.invalid) {
         return;
       }
-      this.handlingData();
       this.bookService.save(this.bookForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isCd) {
-      if (this.cdForm.controls.title.invalid || this.cdForm.controls.artist.invalid ) {
+      if (this.cdForm.controls.title.invalid || this.cdForm.controls.artist.invalid || this.cdForm.controls.releaseDate.invalid) {
         return;
       }
-      this.handlingData();
       this.cdService.save(this.cdForm.value).subscribe(() => this.router.navigate(['./']));
     }
 
     if (this.isDvd) {
-      if (this.dvdForm.controls.title.invalid || this.dvdForm.controls.synopsis.invalid) {
+      if (this.dvdForm.controls.title.invalid || this.dvdForm.controls.synopsis.invalid || this.dvdForm.controls.releaseDate.invalid) {
         return;
       }
-      this.handlingData();
       this.dvdService.save(this.dvdForm.value).subscribe(() => this.router.navigate(['./']));
     }
   }
