@@ -1,68 +1,34 @@
-<div class="form-style-8" *ngIf="isBook === true">
-    <h2>Register your book</h2>
-    <form [formGroup]="bookForm" (ngSubmit)="save()">
-        <input type="text" formControlName="author" placeholder="Author" />
-        <div *ngIf="bookForm.controls.author.invalid && showErrors">
-          <div *ngIf="bookForm.controls.author.errors.required" class="danger">Author is required.</div>
-        </div>
-        <input type="email" formControlName="cover" placeholder="Cover" />
-        <input type="text" formControlName="title" placeholder="Title" />
-        <div *ngIf="bookForm.controls.title.invalid && showErrors">
-          <div *ngIf="bookForm.controls.title.errors.required" class="danger">Title is required.</div>
-        </div>
-        <input type="text" formControlName="releaseDate" placeholder="Release date" />
-        <div *ngIf="bookForm.controls.releaseDate.invalid && showErrors">
-          <div *ngIf="bookForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
-        </div>
-        <input type="text" class="imageName" formControlName="imageName"/>
-        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
-        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br>      
-        <input type="submit" value="Save"/> 
-    </form>
+<form class="form-style-8" [formGroup]="form" (ngSubmit)="save()">
+  <h2>Register your {{productCategory}}</h2>
+  <ng-container *ngIf="form.controls.author.enabled">
+    <input type="text" formControlName="author" placeholder="Author" />
+    <div *ngIf="form.controls.author.invalid && showErrors">
+      <div *ngIf="form.controls.author.errors.required" class="danger">Author is required.</div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="form.controls.artist.enabled">
+    <input type="text" formControlName="artist" placeholder="Artist" />
+    <div *ngIf="form.controls.artist.invalid && showErrors">
+      <div *ngIf="form.controls.artist.errors.required" class="danger">Artist is required.</div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="form.controls.synopsis.enabled">
+    <input type="text" formControlName="synopsis" placeholder="Synopsis" />
+    <div *ngIf="form.controls.synopsis.invalid && showErrors">
+      <div *ngIf="form.controls.synopsis.errors.required" class="danger">Synopsis is required.</div>
+    </div>
+  </ng-container>
+  <input type="email" formControlName="cover" placeholder="Cover" />
+  <input type="text" formControlName="title" placeholder="Title" />
+  <div *ngIf="form.controls.title.invalid && showErrors">
+    <div *ngIf="form.controls.title.errors.required" class="danger">Title is required.</div>
   </div>
-
-<div class="form-style-8" *ngIf="isCd === true">
-    <h2>Register your CD</h2>
-    <form [formGroup]="cdForm" (ngSubmit)="save()">
-        <input type="text" formControlName="artist" placeholder="Artist" />
-        <div *ngIf="cdForm.controls.artist.invalid && showErrors">
-          <div *ngIf="cdForm.controls.artist.errors.required" class="danger">Artist is required.</div>
-        </div>
-        <input type="email" formControlName="cover" placeholder="Cover" />
-        <input type="text" formControlName="title" placeholder="Title" />
-        <div *ngIf="cdForm.controls.title.invalid && showErrors">
-          <div *ngIf="cdForm.controls.title.errors.required" class="danger">Title is required.</div>
-        </div>
-        <input type="text" formControlName="releaseDate" placeholder="Release date" />
-        <div *ngIf="cdForm.controls.releaseDate.invalid && showErrors">
-          <div *ngIf="cdForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
-        </div>
-        <input type="text" class="imageName" formControlName="imageName"/>
-        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
-        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 
-        <input type="submit" value="Save"/> 
-    </form>
+  <input type="text" formControlName="releaseDate" placeholder="Release date" />
+  <div *ngIf="form.controls.releaseDate.invalid && showErrors">
+    <div *ngIf="form.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
   </div>
-
-<div class="form-style-8" *ngIf="isDvd === true">
-    <h2>Register your DVD</h2>
-    <form [formGroup]="dvdForm" (ngSubmit)="save()">
-        <input type="text" formControlName="synopsis" placeholder="Synopsis" />
-        <div *ngIf="dvdForm.controls.synopsis.invalid && showErrors">
-          <div *ngIf="dvdForm.controls.synopsis.errors.required" class="danger">Synopsis is required.</div>
-        </div>
-        <input type="email" formControlName="cover" placeholder="Cover" />
-        <input type="text" formControlName="title" placeholder="Title" />
-        <div *ngIf="dvdForm.controls.title.invalid && showErrors">
-          <div *ngIf="dvdForm.controls.title.errors.required" class="danger">Title is required.</div>
-        </div>
-        <input type="text" formControlName="releaseDate" placeholder="Release date" />
-        <div *ngIf="dvdForm.controls.releaseDate.invalid && showErrors">
-          <div *ngIf="dvdForm.controls.releaseDate.errors.required" class="danger"> Release Date is required.</div>
-        </div>
-        <input type="text" class="imageName" formControlName="imageName"/>
-        <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
-        <input  #imageInput class="image" type="file"  accept="image/*" (change)="processFile($event.target.files)"/><br> 
-        <input type="submit" value="Save"/> 
-    </form>
-  </div>
+  <input type="text" class="imageName" formControlName="imageName" />
+  <button mat-button color="primary" (click)="selectImage()" type="button">Inserir imagem</button>
+  <input #imageInput class="image" type="file" accept="image/*" (change)="processFile($event.target.files)" /><br>
+  <input type="submit" value="Save" />
+</form>

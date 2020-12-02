@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.SpaServices.AngularCli;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Storage.Catalog.App.Database;
 using Storage.Catalog.Domain;
 using Storage.Catalog.Domain.Entities;
 using Storage.Catalog.Domain.Repositories;
+using Storage.Catalog.Infrastructure.Database;
 using Storage.Catalog.Infrastructure.Repositories;
 
 namespace Storage.Catalog.App
@@ -33,12 +35,9 @@ namespace Storage.Catalog.App
 
             services.AddMvc();
 
-            services.AddTransient<IProductRepository, ProductRepository>();
-
-            services.AddTransient<IBookRepository, BookRepository>();
-            
+            services.AddTransient<IConnectionProvider, ConnectionProvider>();            
+            services.AddTransient<IBookRepository, BookRepository>();            
             services.AddTransient<ICdRepository, CdRepository>();
-
             services.AddTransient<IDvdRepository, DvdRepository>();
 
             services.AddSingleton(Configuration.GetSection("ConnectionString").Get<ConnectionString>());

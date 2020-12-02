@@ -10,11 +10,13 @@ import {MatInputModule} from '@angular/material/input';
 import { ProductRoutingModule } from './product-routing.module';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { ProductListComponent } from './product-list/product-list.component';
+import { ProductItemComponent } from './product-item/product-item.component';
 
 @NgModule({
   declarations: [
     ProductEditComponent,
-    ProductListComponent
+    ProductListComponent,
+    ProductItemComponent
   ],
   imports: [
     ProductRoutingModule,

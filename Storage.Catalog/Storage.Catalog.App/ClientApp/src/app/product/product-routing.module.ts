@@ -9,27 +9,11 @@ const routes: Routes = [
     component: ProductListComponent,  
   },
   {
-    path: 'book/new',
+    path: ':productCategory/new',
     component: ProductEditComponent
   },
   {
-    path: 'cd/new',
-    component: ProductEditComponent
-  },
-  {
-    path: 'dvd/new',
-    component: ProductEditComponent
-  },
-  {
-    path: 'book/:id/edit',
-    component: ProductEditComponent
-  },
-  {
-    path: 'cd/:id/edit',
-    component: ProductEditComponent
-  },
-  {
-    path: 'dvd/:id/edit',
+    path: ':productCategory/:id/edit',
     component: ProductEditComponent
   }
 ];

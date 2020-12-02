@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Storage.Catalog.Domain.Entities;
+﻿using Storage.Catalog.Domain.Entities;
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface IDvdRepository : IRepository<Dvd>
+    public interface IDvdRepository : IRepository<int, Dvd>
     {
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface IBookRepository : IRepository<Book>
+    public interface IBookRepository : IRepository<int, Book>
     {
     }
 }

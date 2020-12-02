@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Storage.Catalog.Domain
+namespace Storage.Catalog.Domain.Entities
 {
-    public class Product
+    public class Product : IEntity<int>
     {
         public int Id { get; set; }
         public string Cover { get; set; }

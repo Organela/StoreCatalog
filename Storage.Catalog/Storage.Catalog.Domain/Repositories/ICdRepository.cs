@@ -2,7 +2,7 @@
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface ICdRepository : IRepository<Cd>
+    public interface ICdRepository : IRepository<int, Cd>
     {
     }
 }

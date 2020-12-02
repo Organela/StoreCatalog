@@ -1,97 +1,40 @@
 <div>
-    <button mat-button (click)="setShowAll()">Show all</button>
-    <button mat-button (click)="setShowBooks()">Show books</button>
-    <button mat-button (click)="setShowCds()">Show cds</button>
-    <button mat-button (click)="setShowDvds()">Show dvds</button>
+  <button mat-button (click)="setShowAll()">Show all</button>
+  <button mat-button (click)="setShowBooks()">Show books</button>
+  <button mat-button (click)="setShowCds()">Show cds</button>
+  <button mat-button (click)="setShowDvds()">Show dvds</button>
 
-    <div class="dropdown">
-      <button class="dropbtn">Register</button>
-      <div class="dropdown-content">
-        <a href="#" [routerLink]="['./book/new']">Book</a>
-        <a href="#" [routerLink]="['./cd/new']">Cd</a>
-        <a href="#" [routerLink]="['./dvd/new']">Dvd</a>
-      </div>
+  <div class="dropdown">
+    <button class="dropbtn">Register</button>
+    <div class="dropdown-content">
+      <a href="#" [routerLink]="['./books/new']">Book</a>
+      <a href="#" [routerLink]="['./cds/new']">Cd</a>
+      <a href="#" [routerLink]="['./dvds/new']">Dvd</a>
     </div>
+  </div>
 </div>
 
-<div class="container" *ngIf="(isBook === true || isShowAll == true) && books?.length">
+<div class="container">
+  <mat-form-field class="filter">
+    <mat-label>Filter by title</mat-label>
+    <input matInput [ngModel]="filterValue" (ngModelChange)="applyFilter($event)" placeholder="Search product" #input>
+  </mat-form-field>
+  <ng-container *ngIf="(isBook || isShowAll) && filteredBooks?.length">
     <h1>Books</h1>
-    <mat-form-field class="filter">
-      <mat-label>Filter by title</mat-label>
-      <input matInput (keyup)="applyFilter($event)" placeholder="Search product" #input>
-    </mat-form-field>
-    <div class="card u-clearfix" *ngFor="let book of books">     
-      <div class="card-media">
-        <img *ngIf="!book.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
-        <img *ngIf="book.image" [src]="'/api/books/' + book.id + '/image'" class="card-media-img"/>
-      </div>      
-      <div class="card-body">
-        <h2 class="card-body-heading">{{book.title}}</h2>
-        <div class="card-body-options">
-          <div class="card-body-option card-body-option-favorite">
-            <a [routerLink]="['./book', book.id, 'edit']">
-<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
-            </a>
-            <a (click)="deleteBook(book)">
-              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
-            </a>
-        </div>
-        </div>
-        <p>Author: {{book.author}}</p>
-        <p>Cover: {{book.cover}}</p>
-        <p>Release date: {{book.releaseDate}}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" *ngIf="(isCd === true || isShowAll == true) && cds?.length">
+    <app-product-item *ngFor="let book of filteredBooks" baseRoute="books" [item]="book" (deleteClick)="delete('Books', book)">
+      <p additionalData>Author: {{book.author}}</p>
+    </app-product-item>
+  </ng-container>
+  <ng-container *ngIf="(isCd || isShowAll) && filteredCds?.length">
     <h1>Cds</h1>
-    <div class="card u-clearfix" *ngFor="let cd of cds">     
-      <div class="card-media">
-        <img *ngIf="!cd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
-        <img *ngIf="cd.image" [src]="'/api/cds/' + cd.id + '/image'" class="card-media-img"/> 
-      </div>      
-      <div class="card-body">
-        <h2 class="card-body-heading">{{cd.title}}</h2>
-        <div class="card-body-options">
-          <div class="card-body-option card-body-option-favorite">
-            <a [routerLink]="['./cd', cd.id, 'edit']">
-<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
-            </a>
-            <a (click)="deleteCd(cd)">
-              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
-            </a> 
-        </div>
-        </div>
-        <p>Artist: {{cd.artist}}</p>
-        <p>Cover: {{cd.cover}}</p>
-        <p>Release date: {{cd.releaseDate}}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="container" *ngIf="(isDvd === true || isShowAll == true) && dvds?.length">
+    <app-product-item *ngFor="let cd of filteredCds" baseRoute="cds" [item]="cd" (deleteClick)="delete('Cds', cd)">
+      <p additionalData>Artist: {{cd.artist}}</p>
+    </app-product-item>
+  </ng-container>
+  <ng-container *ngIf="(isDvd || isShowAll) && filteredDvds?.length">
     <h1>Dvds</h1>
-    <div class="card u-clearfix" *ngFor="let dvd of dvds">     
-      <div class="card-media">
-        <img *ngIf="!dvd.image" src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
-        <img *ngIf="dvd.image" [src]="'/api/dvds/' + dvd.id + '/image'" class="card-media-img"/>  
-      </div>      
-      <div class="card-body">
-        <h2 class="card-body-heading">{{dvd.title}}</h2>
-        <div class="card-body-options">
-          <div class="card-body-option card-body-option-favorite">
-            <a [routerLink]="['./dvd', dvd.id, 'edit']">
-<!--Edit-->     <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
-            </a>
-            <a (click)="deleteDvd(dvd)">
-              <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
-            </a>
-        </div>
-        </div>
-        <p>Synopsis: {{dvd.synopsis}}</p>
-        <p>Cover: {{dvd.cover}}</p>
-        <p>Release date: {{dvd.releaseDate}}</p>
-      </div>
-    </div>
-  </div>
+    <app-product-item *ngFor="let dvd of filteredDvds" baseRoute="dvds" [item]="dvd" (deleteClick)="delete('Dvds', dvd)">
+      <p additionalData>Synopsis: {{dvd.synopsis}}</p>
+    </app-product-item>
+  </ng-container>
+</div>

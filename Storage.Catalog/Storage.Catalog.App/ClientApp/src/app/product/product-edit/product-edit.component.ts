@@ -1,9 +1,10 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { BookService } from '../services/book.service';
 import { CdService } from '../services/cd.service';
+import { CrudService } from '../services/crud.service';
 import { DvdService } from '../services/dvd.service';
 
 @Component({
@@ -11,117 +12,67 @@ import { DvdService } from '../services/dvd.service';
   templateUrl: './product-edit.component.html',
   styleUrls: ['./product-edit.component.scss']
 })
-export class ProductEditComponent implements OnInit {
+export class ProductEditComponent {
 
   @ViewChild('imageInput', { static: false }) private imageInputRef: ElementRef<HTMLInputElement>;
 
-  bookForm: FormGroup;
-  cdForm: FormGroup;
-  dvdForm: FormGroup;
+  form: FormGroup;
 
-  isBook = false;
-  isCd = false;
-  isDvd = false;
   isValid = false;
   showErrors = false;
 
   id: number;
+  private readonly productService: CrudService<any>;
+  productCategory: string;
 
   constructor(private formBuilder: FormBuilder,
               private route: ActivatedRoute,
               private router: Router,
-              private bookService: BookService,
-              private cdService: CdService,
-              private dvdService: DvdService,
-              private cd: ChangeDetectorRef) {
+              bookService: BookService,
+              cdService: CdService,
+              dvdService: DvdService,
+              private changeDetectorRef: ChangeDetectorRef) {
+
+    this.form = this.formBuilder.group({
+      artist: [null, [Validators.required]],
+      synopsis: [null, [Validators.required]],
+      author: [null, [Validators.required]],
+      id: null,
+      cover: null,
+      title: [null, [Validators.required]],
+      releaseDate: [null, [Validators.required]],
+      image: null,
+      imageName: null
+    });
+
+    this.form.controls.author.disable();
+    this.form.controls.synopsis.disable();
+    this.form.controls.artist.disable();
 
     this.route.paramMap.subscribe(params => {
       this.id = +params.get('id');
-
-      if (this.router.url == `/book/${this.id}/edit` || this.router.url == '/book/new') {
-        this.isBook = true;
-        this.isCd = false;
-        this.isDvd = false;
-        this.buildBookForm(this.id);
-      }
-      if (this.router.url == `/cd/${this.id}/edit` || this.router.url == '/cd/new') {
-        this.isCd = true;
-        this.isDvd = false;
-        this.isBook = false;
-        this.buildCdForm(this.id);
-      }
-      if (this.router.url == `/dvd/${this.id}/edit` || this.router.url == '/dvd/new') {
-        this.isDvd = true;
-        this.isCd = false;
-        this.isBook = false;
-        this.buildDvdForm(this.id);
-      }
+      this.productCategory = params.get('productCategory');
     });
-
-    if (this.isBook) {
-      bookService.getById(this.id).subscribe(book => {
-        if (book !== undefined && book !== null) {
-          this.bookForm.patchValue(book);
-        }
-      });
+    
+    if (this.productCategory === 'books') {
+      this.productService = bookService;
+      this.form.controls.author.enable();
     }
-
-    if (this.isCd) {
-      cdService.getById(this.id).subscribe(cd => {
-        if (cd !== undefined && cd !== null) {
-          this.cdForm.patchValue(cd);
-        }
-      });
+    if (this.productCategory === 'cds') {
+      this.productService = cdService;
+      this.form.controls.artist.enable();
     }
-
-    if (this.isDvd) {
-      dvdService.getById(this.id).subscribe(dvd => {
-        if (dvd !== undefined && dvd !== null) {
-          this.dvdForm.patchValue(dvd);
-        }
-      });
+    if (this.productCategory === 'dvds') {
+      this.productService = dvdService;
+      this.form.controls.synopsis.enable();
     }
-  }
-
-  ngOnInit(): void {
-  }
-
-  buildBookForm(id: number) {
-    this.bookForm = this.formBuilder.group({
-      author: [null, [Validators.required]],
-      id,
-      cover: null,
-      title: [null, [Validators.required]],
-      releaseDate: [null, [Validators.required]],
-      image: null,
-      imageName: null
+    
+    this.productService.getById(this.id).subscribe(product => {
+      if (product !== undefined && product !== null) {
+        this.form.patchValue(product);
+      }
     });
   }
-
-  buildCdForm(id: number) {
-    this.cdForm = this.formBuilder.group({
-      artist: [null, [Validators.required]],
-      id,
-      cover: null,
-      title: [null, [Validators.required]],
-      releaseDate: [null, [Validators.required]],
-      image: null,
-      imageName: null
-    });
-  }
-
-  buildDvdForm(id: number) {
-    this.dvdForm = this.formBuilder.group({
-      synopsis: [null, [Validators.required]],
-      id,
-      cover: null,
-      title: [null, [Validators.required]],
-      releaseDate: [null, [Validators.required]],
-      image: null,
-      imageName: null
-    });
-  }
-
 
   processFile(files: FileList) {
     const file = files.item(0);
@@ -133,61 +84,27 @@ export class ProductEditComponent implements OnInit {
     const reader = new FileReader();
 
     reader.onload = (e) => {
-      if (this.isBook) {
-        this.bookForm.patchValue({
-          image: e.target.result,
-          imageName: file.name
-        });
-      }
-
-      if (this.isCd) {
-        this.cdForm.patchValue({
-          image: e.target.result,
-          imageName: file.name
-        });
-      }
-
-      if (this.isDvd) {
-        this.dvdForm.patchValue({
-          image: e.target.result,
-          imageName: file.name
-        });
-      }
-      this.cd.markForCheck();
+      this.form.patchValue({
+        image: e.target.result,
+        imageName: file.name
+      });
+      this.changeDetectorRef.markForCheck();
       this.isValid = true;
     }
 
     reader.readAsArrayBuffer(file);
   }
 
-
   selectImage() {
     this.imageInputRef.nativeElement.click();
   }
 
   save() {
-    
-    this.showErrors = true;
-
-    if (this.isBook) {
-      if (this.bookForm.controls.title.invalid || this.bookForm.controls.author.invalid || this.bookForm.controls.releaseDate.invalid) {
-        return;
-      }
-      this.bookService.save(this.bookForm.value).subscribe(() => this.router.navigate(['./']));
+    if (this.form.invalid) {
+      this.showErrors = true;
+      return;
     }
 
-    if (this.isCd) {
-      if (this.cdForm.controls.title.invalid || this.cdForm.controls.artist.invalid || this.cdForm.controls.releaseDate.invalid) {
-        return;
-      }
-      this.cdService.save(this.cdForm.value).subscribe(() => this.router.navigate(['./']));
-    }
-
-    if (this.isDvd) {
-      if (this.dvdForm.controls.title.invalid || this.dvdForm.controls.synopsis.invalid || this.dvdForm.controls.releaseDate.invalid) {
-        return;
-      }
-      this.dvdService.save(this.dvdForm.value).subscribe(() => this.router.navigate(['./']));
-    }
+    this.productService.save(this.form.value).subscribe(() => this.router.navigate(['./']));
   }
 }

@@ -1,49 +1,55 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { BookService } from '../services/book.service';
 import { CdService } from '../services/cd.service';
+import { CrudService } from '../services/crud.service';
 import { DvdService } from '../services/dvd.service';
 import { Book } from '../shared/book.model';
 import { Cd } from '../shared/cd.model';
 import { Dvd } from '../shared/dvd.model';
+import { Product } from '../shared/product.model';
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss']
 })
-export class ProductListComponent implements OnInit {
-  books: Book[];
-  cds: Cd[];
-  dvds: Dvd[];
+export class ProductListComponent {
+  private allBooks: Book[];
+  private allCds: Cd[];
+  private allDvds: Dvd[];
+  private productServiceMap: {[key: string]: CrudService<any>};
+  private filterValue: string;
+
+  filteredBooks: Book[];
+  filteredCds: Cd[];
+  filteredDvds: Dvd[];
 
   isBook = true;
   isCd = true;
   isDvd = true;
   isShowAll = true;
 
-  constructor(readonly bookService: BookService,
-              readonly cdService: CdService,
-              readonly dvdService: DvdService) {
-              this.load();
+  constructor(bookService: BookService,
+              cdService: CdService,
+              dvdService: DvdService) {
+    this.productServiceMap = {
+      "Books": bookService,
+      "Cds": cdService,
+      "Dvds": dvdService
+    };
+
+    this.load();
   }
 
   load() {
-    this.bookService.getAll().subscribe(books => {
-      this.books = books;
-    });
-
-    this.cdService.getAll().subscribe(cds => {
-      this.cds = cds;
-    });
-
-    this.dvdService.getAll().subscribe(dvds => {
-      this.dvds = dvds;
-    });
-  }
-
-  ngOnInit(): void {
-
+    for (let key of Object.keys(this.productServiceMap)) {
+      const service = this.productServiceMap[key];
+      service.getAll().subscribe(products => {
+        this[`all${key}`] = products;
+        this[`filtered${key}`] = products;
+      });
+    }
   }
 
   setShowAll() {
@@ -71,48 +77,20 @@ export class ProductListComponent implements OnInit {
     this.isShowAll = false;
   }
 
-  deleteBook(book: any) {
-    this.bookService.delete(book).subscribe(() => {
-      this.load();
+  delete(productType: string, product: Product) {
+    this.productServiceMap[productType].delete(product).subscribe(() => {
+      const products = this[`all${productType}`];
+      products.splice(products.indexOf(product), 1);
+      this.applyFilter(this.filterValue);
     });
   }
 
-  deleteCd(cd: any) {
-    this.cdService.delete(cd).subscribe(() => {
-      this.load();
-    });
-  }
+  applyFilter(filterValue: string) {
+    this.filterValue = filterValue;
 
-  deleteDvd(dvd: any) {
-    this.dvdService.delete(dvd).subscribe(() => {
-      this.load();
-    })
-  }
-
-  applyFilter(event: Event) {
-    const filterValue = (event.target as HTMLInputElement).value.trim().toLocaleLowerCase();
-
-    if (filterValue == "") {
-      this.load();
+    for (let key of Object.keys(this.productServiceMap)) {
+      const allProducts = this[`all${key}`];
+      this[`filtered${key}`] = allProducts.filter(product => product.title.toLocaleLowerCase().includes(filterValue || ''));
     }
-
-      this.bookService.getAll().subscribe(() => {
-        this.books = this.books.filter(book => {
-          return book.title.toLocaleLowerCase().includes(filterValue)
-        });
-      });
-    
-      this.cdService.getAll().subscribe(() => {
-        this.cds = this.cds.filter(cd => {
-          return cd.title.toLocaleLowerCase().includes(filterValue)
-        });
-      });
-
-      this.dvdService.getAll().subscribe(() => {
-        this.dvds = this.dvds.filter(dvd => {
-          return dvd.title.toLocaleLowerCase().includes(filterValue)
-        });
-      });
   }
-
 }

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using Storage.Catalog.Domain.Entities;
 
 namespace Storage.Catalog.Domain.Repositories
 {
-    public interface IRepository<T>
+    public interface IRepository<TId, TEntity> where TEntity : IEntity<TId>
     {
-        Task<int> DeleteAsync(int id);
-        Task<IEnumerable<T>> GetAllAsync();
-        Task<T> GetByIdAsync(int id);
-        Task<int> SaveAsync(T entity);
+        Task DeleteAsync(TId id);
+        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<TEntity> GetByIdAsync(TId id);
+        Task SaveAsync(TEntity entity);
         
     }
 }

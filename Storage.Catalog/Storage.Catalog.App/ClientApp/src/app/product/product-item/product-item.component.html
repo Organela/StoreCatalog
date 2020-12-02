@@ -1,0 +1,25 @@
+<div class="card u-clearfix">
+    <div class="card-media">
+        <img *ngIf="item.image; else productPlaceholder" [src]="'/api/' + baseRoute + '/' + item.id + '/image'"
+            class="card-media-img" />
+        <ng-template #productPlaceholder>
+            <img src="../../../assets/img/product.jpg" alt="" class="card-media-img" />
+        </ng-template>
+    </div>
+    <div class="card-body">
+        <h2 class="card-body-heading">{{item.title}}</h2>
+        <div class="card-body-options">
+            <div class="card-body-option card-body-option-favorite">
+                <a [routerLink]="[baseRoute, item.id, 'edit']">
+                    <!--Edit--> <span class="iconify" data-icon="mdi:circle-edit-outline" data-inline="false"></span>
+                </a>
+                <a (click)="deleteClick.emit()">
+                    <span class="iconify" data-icon="mdi:delete" data-inline="false"></span>
+                </a>
+            </div>
+        </div>
+        <ng-content select="[additionalData]"></ng-content>
+        <p>Cover: {{item.cover}}</p>
+        <p>Release date: {{item.releaseDate}}</p>
+    </div>
+</div>

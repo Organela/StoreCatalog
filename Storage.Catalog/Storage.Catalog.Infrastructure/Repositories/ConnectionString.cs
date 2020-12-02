@@ -1,4 +1,4 @@
-﻿namespace Storage.Catalog.Domain.Entities
+﻿namespace Storage.Catalog.Infrastructure.Repositories
 {
     public class ConnectionString
     {
